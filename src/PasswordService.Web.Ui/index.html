@@ -1,9 +1,20 @@
 ﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="passwordServiceApp">
 <head>
-    <title></title>
+    <title>Password Service Web Application</title>
 </head>
-<body>
-    HI
+<body ng-controller="passwordServiceCtrl">
+        
+    <ul>
+        <li ng-repeat="password in passwords">
+            {{password.Name}} - {{password.Value}}
+        </li>
+    </ul>
+
+    <script src="lib/jquery-1.9.1.js"></script>
+    <script src="lib/bootstrap.js"></script>
+    <script src="lib/angular.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
 </body>
 </html>
