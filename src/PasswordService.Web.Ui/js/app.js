@@ -1,5 +1,7 @@
 ﻿'use strict';
 
-var passwordServiceApp = angular.module('passwordServiceApp', []);
+(function () {
+    var passwordServiceApp = angular.module('passwordServiceApp', []);
+    //passwordServiceApp.config([]);
+})();
 
-//passwordServiceApp.config([]);
