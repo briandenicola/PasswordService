@@ -1,0 +1,8 @@
+<configuration>
+  <system.web>
+    <authorization>
+      <allow users="Domain\MyDomainUserName" />
+      <deny users="*" />
+    </authorization>
+  </system.web>
+</configuration>

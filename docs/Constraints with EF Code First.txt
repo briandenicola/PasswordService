@@ -1,0 +1,19 @@
+namespace EFSample.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+     
+    public partial class AddUniqueIndexToUsernameInUsers : DbMigration
+    {
+        public override void Up()
+        {
+            CreateIndex("dbo.Users","Username",true);
+        }
+         
+        public override void Down()
+        {
+            DropIndex("dbo.Users", "Username");
+        }
+    }
+}
+By using t

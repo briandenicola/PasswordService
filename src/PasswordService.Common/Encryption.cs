@@ -12,6 +12,7 @@ namespace PasswordService.Common
     {
         private static byte[] _key;
         private static byte[] _iv;
+        private static int size = 8;
 
         public Encryption(string key, string iv) 
         {
@@ -27,7 +28,6 @@ namespace PasswordService.Common
             MemoryStream msEncrypt = null;
             CryptoStream csEncrypt = null;
             StreamWriter swEncrypt = null;
-
             RijndaelManaged aesAlg = null;
 
             try {
@@ -86,7 +86,6 @@ namespace PasswordService.Common
 
         public static string GenerateSalt()
         {
-            int size = 256;
             RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
             byte[] buff = new byte[size];
             rng.GetBytes(buff);

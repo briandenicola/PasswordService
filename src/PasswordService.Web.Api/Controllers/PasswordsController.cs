@@ -14,62 +14,68 @@ using PasswordService.Common;
 
 namespace PasswordService.Web.Api.Controllers
 {
+    [Authorize]
     public class PasswordsController : ApiController
     {
         private PasswordServiceWebApiContext db = new PasswordServiceWebApiContext();
         private Encryption encryption = new Encryption(Configs.Key, Configs.IV);
 
         // GET api/Passwords
-        [Authorize]
         public IQueryable<Password> GetPasswords()
         {
-            return db.Passwords;
+            return db.Passwords.Select( x => new Password()
+                {
+                    PasswordId = x.PasswordId,
+                    Name = x.Name,
+                    Salt = String.Empty,
+                    Value = x.Value,
+                    Usage = x.Usage,
+                    CreatedBy = x.CreatedBy,
+                    CreatedDate = x.CreatedDate,
+                    LastModifiedDate = x.LastModifiedDate,
+                    LastModifyBy = x.LastModifyBy 
+                }).OrderByDescending( x => x.Name );
         }
 
         // GET api/Passwords/5
-        [Authorize]
         [ResponseType(typeof(Password))]
         public async Task<IHttpActionResult> GetPassword(long id)
         {
             Password password = await db.Passwords.FindAsync(id);
-            if (password == null)
-            {
+            if (password == null) {
                 return NotFound();
             }
 
-            password.Value = Encryption.Decrypt(password.Value);
+            password.Value = Encryption.Decrypt(password.Value).Replace(String.Concat(String.Concat(password.Name, password.Salt)),String.Empty).TrimStart();
 
             return Ok(password);
         }
 
         // PUT api/Passwords/5
-        [Authorize]
         public async Task<IHttpActionResult> PutPassword(long id, Password password)
         {
-            if (!ModelState.IsValid)
-            {
+            if (!ModelState.IsValid)  {
                 return BadRequest(ModelState);
             }
 
-            if (id != password.PasswordId)
-            {
+            if (id != password.PasswordId) {
                 return BadRequest();
             }
 
+            password.LastModifiedDate = DateTime.Now;
+            password.LastModifyBy = System.Threading.Thread.CurrentPrincipal.Identity.Name.ToString();
+            password.Value = Encryption.Encrypt(String.Concat(password.Name, password.Salt, password.Value));
+
             db.Entry(password).State = EntityState.Modified;
 
-            try
-            {
+            try {
                 await db.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PasswordExists(id))
-                {
+            catch (DbUpdateConcurrencyException) {
+                if (!PasswordExists(id))  {
                     return NotFound();
                 }
-                else
-                {
+                else {
                     throw;
                 }
             }
@@ -78,12 +84,10 @@ namespace PasswordService.Web.Api.Controllers
         }
 
         // POST api/Passwords
-        [Authorize]
         [ResponseType(typeof(Password))]
         public async Task<IHttpActionResult> PostPassword(Password password)
         {
-            if (!ModelState.IsValid)
-            {
+            if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
 
@@ -107,10 +111,7 @@ namespace PasswordService.Web.Api.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
+            if (disposing) { db.Dispose(); }
             base.Dispose(disposing);
         }
 
