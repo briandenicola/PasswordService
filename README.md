@@ -1,0 +1,1 @@
+This project is intended to be a repository for my learning of F#.
