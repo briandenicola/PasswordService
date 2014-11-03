@@ -1,0 +1,3 @@
+http://plnkr.co/edit/ggtsdMSyYIRcXHe9zkw1?p=preview
+http://codepen.io/m-e-conroy/pen/ALsdF
+http://angular-ui.github.io/bootstrap/

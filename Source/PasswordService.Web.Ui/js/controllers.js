@@ -27,11 +27,14 @@
     }
 
     var passwordDetailsServiceController = function ($scope, $routeParams, passwordService) {
-        passwordService
+        /*passwordService
              .getById($routeParams.id)
              .success(function (data) {
                  $scope.password = data;
              });
+        */
+
+        $scope.password = { "PasswordId": "1", "Name": "svc_password", "Value": "Password001" };
 
         $scope.edit = function () {
             $scope.edit.password = angular.copy($scope.password);
@@ -48,7 +51,6 @@
         };
 
         $scope.save = function () {
-            console.log("I got here - " + $scope.edit.password.PasswordId);
             if ($scope.edit.password.PasswordId) {
                 updatePassword();
             }
@@ -58,7 +60,6 @@
         }
 
         var updatePassword = function () {
-            console.log("I got to UpdatePassword");
             passwordService.update($scope.edit.password)
                 .success(function () {
                     angular.extend($scope.password, $scope.edit.password);
