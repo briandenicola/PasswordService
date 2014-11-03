@@ -2,11 +2,18 @@
 
 (function (app) {
     var passwordServiceController = function ($scope, passwordService) {
-        passwordService
+        /*passwordService
              .getAll()
              .success(function (data) {
                  $scope.passwords = data;
              });
+        */
+        $scope.passwords = [
+                { "PasswordId": "1", "Name": "svc_password", "Value": "asdfafasfsdfasdfasfasdds0" },
+                { "PasswordId": "2", "Name": "svc_password_2", "Value": "asdfafasfsdfasdfasfasdds1" },
+                { "PasswordId": "3", "Name": "svc_password_3", "Value": "asdfafasfsdfasdfasfasdds2" },
+                { "PasswordId": "4", "Name": "svc_password_4", "Value": "asdfafasfsdfasdfasfasdds3" }
+        ]
 
         $scope.create = function () {
             $scope.edit = {

@@ -1,23 +1,24 @@
 ﻿<div ng-controller="passwordServiceController">
-    <table>
-        <thead>
-            <tr>
-                <th>User Name</th>
-                <th>Encrypted Password</th>
-                <th>Usage</th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tr ng-repeat="password in passwords">
-            <td>{{password.Name}}</td>
-            <td>{{password.Value}}</td>
-            <td>{{password.Usage}}</td>
-            <td><a class="btn btn-default" href="#/list/{{password.PasswordId}}">View Password</a></td>
-</tr>
-    </table>
     <button class="btn btn-default" ng-click="create()">Create New Password</button>
     <div ng-include="'/views/edit.html'"></div>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>User Name</th>
+                    <th>Encrypted Password</th>
+                    <th>Usage</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tr ng-repeat="password in passwords">
+                <td>{{password.Name}}</td>
+                <td>{{password.Value}}</td>
+                <td>{{password.Usage}}</td>
+                <td><a class="btn btn-default" href="#/list/{{password.PasswordId}}">View Password</a></td>
+            </tr>
+        </table>
+    </div>
 </div>
 
 
