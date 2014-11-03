@@ -20,24 +20,31 @@ namespace PasswordService.Web.Api.Controllers
         private PasswordServiceWebApiContext db = new PasswordServiceWebApiContext();
         private Encryption encryption = new Encryption(Configs.Key, Configs.IV);
 
-        // GET api/Passwords
+        [System.Web.Http.HttpGet]
         public IQueryable<Password> GetPasswords()
         {
-            return db.Passwords.Select( x => new Password()
+            
+            var passswords = db.Passwords
+                .ToList()
+                .Select( item => new Password
                 {
-                    PasswordId = x.PasswordId,
-                    Name = x.Name,
-                    Salt = String.Empty,
-                    Value = x.Value,
-                    Usage = x.Usage,
-                    CreatedBy = x.CreatedBy,
-                    CreatedDate = x.CreatedDate,
-                    LastModifiedDate = x.LastModifiedDate,
-                    LastModifyBy = x.LastModifyBy 
-                }).OrderByDescending( x => x.Name );
+                    PasswordId = item.PasswordId,
+                    Name = item.Name,
+                    Salt = string.Concat(Enumerable.Repeat("*", 8)),
+                    Value = item.Value,
+                    Usage = item.Usage,
+                    CreatedBy = item.CreatedBy,
+                    CreatedDate = item.CreatedDate,
+                    LastModifiedDate = item.LastModifiedDate,
+                    LastModifyBy = item.LastModifyBy
+                })
+                .OrderByDescending(item => item.Name)
+                .AsQueryable();
+
+            return passswords;
         }
 
-        // GET api/Passwords/5
+        [System.Web.Http.HttpGet]
         [ResponseType(typeof(Password))]
         public async Task<IHttpActionResult> GetPassword(long id)
         {
@@ -51,7 +58,7 @@ namespace PasswordService.Web.Api.Controllers
             return Ok(password);
         }
 
-        // PUT api/Passwords/5
+        [System.Web.Http.HttpPut]
         public async Task<IHttpActionResult> PutPassword(long id, Password password)
         {
             if (!ModelState.IsValid)  {
@@ -83,7 +90,7 @@ namespace PasswordService.Web.Api.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST api/Passwords
+        [System.Web.Http.HttpPost]
         [ResponseType(typeof(Password))]
         public async Task<IHttpActionResult> PostPassword(Password password)
         {
@@ -102,7 +109,7 @@ namespace PasswordService.Web.Api.Controllers
             return CreatedAtRoute("DefaultApi", new { id = password.PasswordId }, password);
         }
 
-        // DELETE api/Passwords/5
+        [System.Web.Http.HttpDelete]
         [ResponseType(typeof(Password))]
         public Task<IHttpActionResult> DeletePassword(long id)
         {
