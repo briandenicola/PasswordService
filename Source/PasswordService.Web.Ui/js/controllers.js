@@ -2,81 +2,98 @@
 
 (function (app) {
     var passwordServiceController = function ($scope, passwordService) {
-        /*passwordService
+        passwordService
              .getAll()
              .success(function (data) {
                  $scope.passwords = data;
              });
-        */
-        $scope.passwords = [
-                { "PasswordId": "1", "Name": "svc_password", "Value": "asdfafasfsdfasdfasfasdds0" },
-                { "PasswordId": "2", "Name": "svc_password_2", "Value": "asdfafasfsdfasdfasfasdds1" },
-                { "PasswordId": "3", "Name": "svc_password_3", "Value": "asdfafasfsdfasdfasfasdds2" },
-                { "PasswordId": "4", "Name": "svc_password_4", "Value": "asdfafasfsdfasdfasfasdds3" }
-        ]
 
-        $scope.create = function () {
-            $scope.edit = {
-                password: {
-                    Name: "",
-                    Value: "",
-                    Usage: ""
-                }
-            };
+        $scope.showPassword = function (id) {
+            passwordService
+             .getById(id)
+             .success(function (data) {
+                  prompt("The password is...",data.Value.toString());
+             });  
         };
     }
 
-    var passwordDetailsServiceController = function ($scope, $routeParams, passwordService) {
-        /*passwordService
+    var passwordCreateModalController = function ($scope, $modal, $log) {
+      $scope.create = {
+        password: {
+            Name: "",
+            Value: "",
+            Usage: ""
+        }
+      };
+
+      $scope.open = function (size) {
+        var modalInstance = $modal.open({
+          templateUrl: '/template/modal/create.html',
+          controller: 'passwordCreateServiceController',
+          size: size,
+          resolve: {
+            password: function () {
+              return $scope.create.password;
+            }
+          }
+        });
+
+        modalInstance.result.then(function (password) {
+          $scope.create.password = password;
+        });
+      }
+    }
+
+    var passwordCreateServiceController = function ($scope, $modalInstance, passwordService) {
+
+        $scope.cancel = function () {
+          $modalInstance.dismiss('cancel');  
+        };
+
+        $scope.save = function () {
+           createPassword();
+           $modalInstance.close($scope.create.password);
+           window.location.href("/");
+        }
+
+        var createPassword = function () {
+            passwordService.create($scope.create.password)
+                .success(function (password) {
+                    //$scope.passwords.push(password);
+                    $scope.create.password = null;
+                });
+        };
+    }
+
+    var passwordEditServiceController = function ($scope, $routeParams, passwordService) {
+
+        passwordService
              .getById($routeParams.id)
              .success(function (data) {
                  $scope.password = data;
              });
-        */
-
-        $scope.password = { "PasswordId": "1", "Name": "svc_password", "Value": "Password001" };
-
-        $scope.edit = function () {
-            $scope.edit.password = angular.copy($scope.password);
-        };
-    }
-
-    var passwordEditServiceController = function ($scope, passwordService) {
-        $scope.isEditable = function () {
-            return $scope.edit && $scope.edit.password;
-        };
 
         $scope.cancel = function () {
-            $scope.edit.password = null;
+          window.location.replace("/"); 
         };
 
         $scope.save = function () {
-            if ($scope.edit.password.PasswordId) {
-                updatePassword();
-            }
-            else {
-                createPassword();
-            }
+            updatePassword();
+            window.location.replace("/");
         }
 
         var updatePassword = function () {
-            passwordService.update($scope.edit.password)
+            passwordService.update($scope.password)
                 .success(function () {
-                    angular.extend($scope.password, $scope.edit.password);
-                    $scope.edit.password = null;
-                });
-        };
-
-        var createPassword = function () {
-            passwordService.create($scope.edit.password)
-                .success(function (password) {
-                    $scope.passwords.push(password);
-                    $scope.edit.password = null;
+                    $scope.password = null;
+                    window.location.replace("/");
                 });
         };
     }
-
+    
     app.controller("passwordServiceController", passwordServiceController);
-    app.controller("passwordDetailsServiceController", passwordDetailsServiceController);
+    app.controller("passwordCreateModalController", passwordCreateModalController);
+    app.controller("passwordCreateServiceController", passwordCreateServiceController);    
     app.controller("passwordEditServiceController", passwordEditServiceController);
+
 }(angular.module("passwordServiceApp")));

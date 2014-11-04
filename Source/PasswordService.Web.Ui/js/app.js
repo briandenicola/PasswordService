@@ -1,16 +1,16 @@
 ﻿'use strict';
 
 (function () {
-    var passwordServiceApp = angular.module('passwordServiceApp', ["ngRoute"]);
+    var passwordServiceApp = angular.module('passwordServiceApp', ["ngRoute","ui.bootstrap"]);
 
     var config = function ($routeProvider) {
         $routeProvider
             .when("/list",
-                { templateUrl: "/views/list.html"})
+                { templateUrl: "/template/list.html"})
             .when("/list/:id",
-                { templateUrl: "/views/details.html"})
+                { templateUrl: "/template/details.html"})
             .when("/edit/:id",
-                { templateUrl: "/views/edit.html" })
+                { templateUrl: "/template/edit.html" })
             .otherwise(
                 { redirectTo: "/list" });
     };

@@ -1,7 +1,5 @@
-﻿<div ng-controller="passwordServiceController">
-    <button class="btn btn-default" ng-click="create()">Create New Password</button>
-    <div ng-include="'/views/edit.html'"></div>
-    <hr/>
+﻿<hr/>
+<div ng-controller="passwordServiceController">
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover">
             <thead>
@@ -9,14 +7,17 @@
                     <th>User Name</th>
                     <th>Encrypted Password</th>
                     <th>Usage</th>
-                    <th></th>
+                    <th>Edit</th>
                 </tr>
             </thead>
             <tr ng-repeat="password in passwords">
                 <td>{{password.Name}}</td>
                 <td>{{password.Value}}</td>
                 <td>{{password.Usage}}</td>
-                <td><a href="#/list/{{password.PasswordId}}"><span class="glyphicon glyphicon-pencil"></span></a></td> 
+                <td>
+                    <a href="" ng-click="showPassword(password.PasswordId)"><span class="glyphicon glyphicon-star"></span></a>
+                    <a href="/#/edit/{{password.PasswordId}}"><span class="glyphicon glyphicon-pencil"></span></a>
+                </td> 
             </tr>
         </table>
     </div>
