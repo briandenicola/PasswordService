@@ -1,11 +1,11 @@
 ﻿#requires -version 3
 
-Set-Variable -Name service_credentials -Value ([System.Management.Automation.PSCredential]::Empty) -Option Private
+Set-Variable -Name service_credentials -Value ([System.Management.Automation.PSCredential]::Empty) -Option AllScope
 Set-Variable -Name passwordlist -Value @()
 
 $password_urls = New-Object PSObject -Property @{
-    PasswordList="http://10.2.1.235/api/passwords/"
-    PasswordDetails="http://10.2.1.235/api/passwords/{0}"
+    PasswordList="https:///api/passwords/"
+    PasswordDetails="https:///api/passwords/{0}"
 }
 
 $password_output = New-Object PSObject -Property @{

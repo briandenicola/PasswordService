@@ -6,11 +6,11 @@
     var config = function ($routeProvider) {
         $routeProvider
             .when("/list",
-                { templateUrl: "/template/list.html"})
+                { templateUrl: "template/list.html"})
             .when("/list/:id",
-                { templateUrl: "/template/details.html"})
+                { templateUrl: "template/details.html"})
             .when("/edit/:id",
-                { templateUrl: "/template/edit.html" })
+                { templateUrl: "template/edit.html" })
             .otherwise(
                 { redirectTo: "/list" });
     };
@@ -31,6 +31,6 @@
 
     passwordServiceApp.config(config);
     passwordServiceApp.factory("passwordService", passwordService);
-    passwordServiceApp.constant("serviceUrl", "/api/passwords/");
+    passwordServiceApp.constant("serviceUrl", "api/passwords/");
 })();
 

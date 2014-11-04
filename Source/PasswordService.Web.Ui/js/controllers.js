@@ -28,7 +28,7 @@
 
       $scope.open = function (size) {
         var modalInstance = $modal.open({
-          templateUrl: '/template/modal/create.html',
+          templateUrl: 'template/modal/create.html',
           controller: 'passwordCreateServiceController',
           size: size,
           resolve: {

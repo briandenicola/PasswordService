@@ -28,7 +28,7 @@
 
       $scope.open = function (size) {
         var modalInstance = $modal.open({
-          templateUrl: '/template/modal/create.html',
+          templateUrl: 'template/modal/create.html',
           controller: 'passwordCreateServiceController',
           size: size,
           resolve: {
@@ -53,7 +53,7 @@
         $scope.save = function () {
            createPassword();
            $modalInstance.close($scope.create.password);
-           window.location.href("/");
+           window.location.href("");
         }
 
         var createPassword = function () {
@@ -74,19 +74,19 @@
              });
 
         $scope.cancel = function () {
-          window.location.replace("/"); 
+          window.location.replace(""); 
         };
 
         $scope.save = function () {
             updatePassword();
-            window.location.replace("/");
+            window.location.replace("");
         }
 
         var updatePassword = function () {
             passwordService.update($scope.password)
                 .success(function () {
                     $scope.password = null;
-                    window.location.replace("/");
+                    window.location.replace("");
                 });
         };
     }
