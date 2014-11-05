@@ -53,7 +53,7 @@ namespace PasswordService.Web.Api.Controllers
                 return NotFound();
             }
 
-            password.Value = Encryption.Decrypt(password.Value).Replace(String.Concat(String.Concat(password.Name, password.Salt)),String.Empty).TrimStart();
+            password.Value = Encryption.Decrypt(password.Value).Replace(String.Concat(String.Concat(password.Salt, password.Name)),String.Empty).TrimStart();
 
             return Ok(password);
         }
@@ -71,7 +71,7 @@ namespace PasswordService.Web.Api.Controllers
 
             password.LastModifiedDate = DateTime.Now;
             password.LastModifyBy = System.Threading.Thread.CurrentPrincipal.Identity.Name.ToString();
-            password.Value = Encryption.Encrypt(String.Concat(password.Name, password.Salt, password.Value));
+            password.Value = Encryption.Encrypt(String.Concat(password.Salt, password.Name, password.Value));
 
             db.Entry(password).State = EntityState.Modified;
 

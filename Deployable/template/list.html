@@ -10,7 +10,7 @@
                     <th>Edit</th>
                 </tr>
             </thead>
-            <tr ng-repeat="password in passwords">
+            <tr ng-repeat="password in passwords | filter:searchTerm">
                 <td>{{password.Name}}</td>
                 <td>{{password.Value}}</td>
                 <td>{{password.Usage}}</td>

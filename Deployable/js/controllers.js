@@ -1,6 +1,10 @@
 ﻿'use strict';
 
 (function (app) {
+    var passwordAppController = function( $scope ) {
+        $scope.searchTerm = '';
+    }
+
     var passwordServiceController = function ($scope, passwordService) {
         passwordService
              .getAll()
@@ -53,13 +57,12 @@
         $scope.save = function () {
            createPassword();
            $modalInstance.close($scope.create.password);
-           window.location.href("");
+           window.location.replace("");
         }
 
         var createPassword = function () {
             passwordService.create($scope.create.password)
                 .success(function (password) {
-                    //$scope.passwords.push(password);
                     $scope.create.password = null;
                 });
         };
@@ -90,7 +93,8 @@
                 });
         };
     }
-    
+
+    app.controller("passwordAppController", passwordAppController);
     app.controller("passwordServiceController", passwordServiceController);
     app.controller("passwordCreateModalController", passwordCreateModalController);
     app.controller("passwordCreateServiceController", passwordCreateServiceController);    
