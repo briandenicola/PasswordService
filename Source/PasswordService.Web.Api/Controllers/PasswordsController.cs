@@ -101,7 +101,7 @@ namespace PasswordService.Web.Api.Controllers
             password.CreatedDate = password.LastModifiedDate = DateTime.Now;
             password.CreatedBy = password.LastModifyBy = System.Threading.Thread.CurrentPrincipal.Identity.Name.ToString();
             password.Salt = Encryption.GenerateSalt();
-            password.Value = Encryption.Encrypt(String.Concat(password.Name, password.Salt, password.Value));
+            password.Value = Encryption.Encrypt(String.Concat(password.Salt, password.Name, password.Value));
 
             db.Passwords.Add(password);
             await db.SaveChangesAsync();
