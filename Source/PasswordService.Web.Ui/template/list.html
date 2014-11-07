@@ -5,14 +5,16 @@
             <thead>
                 <tr>
                     <th>User Name</th>
-                    <th>Encrypted Password</th>
+                    <th>Last Modified Date</th>
+					<th>Last Modified By</th>
                     <th>Usage</th>
-                    <th>Edit</th>
+					<th>Edit</th>
                 </tr>
             </thead>
             <tr ng-repeat="password in passwords | filter:searchTerm">
                 <td>{{password.Name}}</td>
-                <td>{{password.Value}}</td>
+				<td>{{password.LastModifiedDate}}</td>
+				<td>{{password.LastModifyBy}}</td>
                 <td>{{password.Usage}}</td>
                 <td>
                     <a href="" ng-click="showPassword(password.PasswordId)"><span class="glyphicon glyphicon-star"></span></a>
