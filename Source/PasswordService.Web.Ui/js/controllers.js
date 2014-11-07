@@ -7,6 +7,8 @@
 
     var passwordServiceController = function ($scope, passwordService) {
         
+        $scope.currentPage = 1;
+
         passwordService
              .getAll()
              .success(function (data) {

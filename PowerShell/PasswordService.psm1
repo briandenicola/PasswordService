@@ -41,7 +41,7 @@ function Get-Password
         [string] $name,
 
         [Parameter(ParameterSetName="ID",Mandatory=$true)]
-        [int] $id,
+        [int] $ids,
 
         [Parameter(ParameterSetName="Object",Mandatory=$true, ValueFromPipeline=$true)]
         [System.Management.Automation.PSObject] $password
@@ -49,29 +49,28 @@ function Get-Password
 
     begin { 
         $password_details = @()
+        $responses = @()
     }
 
     process {
 
         if($PsCmdlet.ParameterSetName -eq "Name") {
-            $id = Get-Passwords | Where { $_.Name -eq $Name } | Select -ExpandProperty PasswordId
+            $ids = @(Get-Passwords | Where { $_.Name -eq $Name } | Select -ExpandProperty PasswordId)
 
             if(!$id) {
                 throw ($password_error_data.NoServiceAccountName -f $name)
             }
         }
         elseif($PsCmdlet.ParameterSetName -eq "Object" ) {
-            $id = $password.PasswordId
+            $id = @($password.PasswordId)
         }
 
-        $response = Invoke-RestMethod -Method Get -Uri ($password_urls.PasswordDetails -f $id) -Credential (__Get-PasswordServiceCredentials)
-
-        if(!$response) {
-            throw ($password_error_data.NoPasswordofId -f $id)
+        foreach( $id in $ids ) {
+            $responses += Invoke-RestMethod -Method Get -Uri ($password_urls.PasswordDetails -f $id) -Credential (__Get-PasswordServiceCredentials)
         }
     }
     end {
-        return $response
+        return $responses
     }
 }
 
