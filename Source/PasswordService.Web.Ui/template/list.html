@@ -6,12 +6,12 @@
                 <tr>
                     <th>User Name</th>
                     <th>Last Modified Date</th>
-					<th>Last Modified By</th>
+		    <th>Last Modified By</th>
                     <th>Usage</th>
-					<th>Edit</th>
+		    <th>Edit</th>
                 </tr>
             </thead>
-            <tr ng-repeat="password in passwords | filter:searchTerm">
+            <tr dir-paginate="password in passwords | filter:searchTerm | itemsPerPage: 10" current-page="currentPage">
                 <td>{{password.Name}}</td>
 				<td>{{password.LastModifiedDate}}</td>
 				<td>{{password.LastModifyBy}}</td>
@@ -22,6 +22,8 @@
                 </td> 
             </tr>
         </table>
+	<dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="template/pagination.html"></dirpagination-controls>
+
     </div>
 </div>
 

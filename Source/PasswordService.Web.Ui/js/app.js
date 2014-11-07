@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 (function () {
-    var passwordServiceApp = angular.module('passwordServiceApp', ["ngRoute","ui.bootstrap"]);
+    var passwordServiceApp = angular.module('passwordServiceApp', ["ngRoute","ui.bootstrap", "angularUtils.directives.dirPagination"]);
 
     var config = function ($routeProvider) {
         $routeProvider

@@ -6,6 +6,7 @@
     }
 
     var passwordServiceController = function ($scope, passwordService) {
+        
         passwordService
              .getAll()
              .success(function (data) {
