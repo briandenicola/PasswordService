@@ -41,7 +41,7 @@ function Get-Password
         [string] $name,
 
         [Parameter(ParameterSetName="ID",Mandatory=$true)]
-        [int] $ids,
+        [int[]] $ids,
 
         [Parameter(ParameterSetName="Object",Mandatory=$true, ValueFromPipeline=$true)]
         [System.Management.Automation.PSObject] $password
@@ -57,7 +57,7 @@ function Get-Password
         if($PsCmdlet.ParameterSetName -eq "Name") {
             $ids = @(Get-Passwords | Where { $_.Name -eq $Name } | Select -ExpandProperty PasswordId)
 
-            if(!$id) {
+            if(!$ids) {
                 throw ($password_error_data.NoServiceAccountName -f $name)
             }
         }
