@@ -25,30 +25,23 @@ namespace PasswordService.Common
             if (plainText == null || plainText.Length <= 0)
                 throw new ArgumentNullException("plainText");
 
-            MemoryStream msEncrypt = null;
-            CryptoStream csEncrypt = null;
-            StreamWriter swEncrypt = null;
-            RijndaelManaged aesAlg = null;
+            byte[] encrypted_text;
 
-            try {
-                aesAlg = new RijndaelManaged();
-                aesAlg.Key = _key;
-                aesAlg.IV = _iv;
-                ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
-                msEncrypt = new MemoryStream();
-                csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write);
-                swEncrypt = new StreamWriter(csEncrypt);
-                swEncrypt.Write(plainText);
+            using (Aes aes = Aes.Create()) {
+                aes.Key = _key;
+                aes.IV = _iv;
 
+                ICryptoTransform decryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+                using (MemoryStream memStream = new MemoryStream()) {
+                    using (CryptoStream cryptoStream = new CryptoStream(memStream, decryptor, CryptoStreamMode.Write)) {
+                        using (StreamWriter streamWriter = new StreamWriter(cryptoStream)) {
+                            streamWriter.Write(plainText);
+                        }
+                        encrypted_text = memStream.ToArray();
+                    }
+                }
             }
-            finally {
-                if (swEncrypt != null) swEncrypt.Close();
-                if (csEncrypt != null) csEncrypt.Close();
-                if (msEncrypt != null) msEncrypt.Close();
-                if (aesAlg != null) aesAlg.Clear();
-            }
-
-            return Convert.ToBase64String(msEncrypt.ToArray());
+            return Convert.ToBase64String(encrypted_text);
         }
 
         public static string Decrypt(string cipherText)
@@ -56,31 +49,21 @@ namespace PasswordService.Common
             if (cipherText == null || cipherText.Length <= 0)
                 throw new ArgumentNullException("cipherText");
 
-            MemoryStream    msDecrypt   = null;
-            CryptoStream    csDecrypt   = null;
-            StreamReader    srDecrypt   = null;
-            RijndaelManaged aesAlg      = null;
             string plaintext = String.Empty;
 
-            try {
-                aesAlg = new RijndaelManaged();
-                aesAlg.Key = _key;
-                aesAlg.IV = _iv;
+            using(Aes aes = Aes.Create() ) {
+                aes.Key = _key;
+                aes.IV = _iv;
 
-                ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
-                msDecrypt = new MemoryStream(Convert.FromBase64String(cipherText));
-                csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read);
-                srDecrypt = new StreamReader(csDecrypt);
-
-                plaintext = srDecrypt.ReadToEnd();
+                ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+                using(MemoryStream memStream = new MemoryStream(Convert.FromBase64String(cipherText) ) ) {
+                    using(CryptoStream cryptoStream = new CryptoStream(memStream, decryptor, CryptoStreamMode.Read) ){
+                        using(StreamReader  streamReader = new StreamReader(cryptoStream) ){
+                            plaintext = streamReader.ReadToEnd();
+                        }
+                    }
+                }
             }
-            finally  {
-                if (srDecrypt != null) srDecrypt.Close();
-                if (csDecrypt != null) csDecrypt.Close();
-                if (msDecrypt != null) msDecrypt.Close();
-                if (aesAlg != null) aesAlg.Clear();
-            }
-
             return plaintext;
         }
 
