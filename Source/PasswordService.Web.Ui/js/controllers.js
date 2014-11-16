@@ -60,13 +60,12 @@
         $scope.save = function () {
            createPassword();
            $modalInstance.close($scope.create.password);
-           window.location.replace("");
         }
 
         var createPassword = function () {
             passwordService.create($scope.create.password)
                 .success(function (password) {
-                    $scope.create.password = null;
+                    window.location.replace("");
                 });
         };
     }
@@ -91,7 +90,6 @@
         var updatePassword = function () {
             passwordService.update($scope.password)
                 .success(function () {
-                    $scope.password = null;
                     window.location.replace("");
                 });
         };
