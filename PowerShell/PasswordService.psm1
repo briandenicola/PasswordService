@@ -27,6 +27,14 @@ function __Get-PasswordServiceCredentials
 
 function Get-Passwords
 {
+    <#
+    .SYNOPSIS
+    This PowerShell Function will Get All Passwords and return an Powershell Object.
+
+    .EXAMPLE
+    Get-Passwords 
+
+    #>
     if( $passwordlist.Length -eq 0 ) {
         $passwordlist = Invoke-RestMethod -Method Get -Uri $password_urls.PasswordList -Credential (__Get-PasswordServiceCredentials)
     }
@@ -36,6 +44,17 @@ function Get-Passwords
 
 function Get-Password
 {
+    <#
+    .SYNOPSIS
+    This PowerShell Function will Get a specific Password
+
+    .EXAMPLE
+    Get-Password -id 1
+
+    .EXAMPLE
+    Get-Passwords | Where Name -imatch 'example_user' | Get-Password
+
+    #>
     param (
         [Parameter(ParameterSetName="Name",Mandatory=$true)]
         [string] $name,
@@ -76,6 +95,19 @@ function Get-Password
 
 function New-Password
 {
+    <#
+    .SYNOPSIS
+    This PowerShell Function will Create a New Passwords
+
+    .EXAMPLE
+    $pass = New-Object PSObject -Property @{
+        Name = 'example_user'
+        Value = 'dsafjlkl344j3l4j32432'
+        Usage = 'This is a sample user'
+    }
+    New-Password -password $pass
+
+    #>
     param (
         [Parameter(Mandatory=$true, ValueFromPipeline=$true)]
         [System.Management.Automation.PSObject] $password
@@ -93,6 +125,16 @@ function New-Password
 
 function Update-Password 
 {
+    <#
+    .SYNOPSIS
+    This PowerShell Function will Update a Passwords
+
+    .EXAMPLE
+    $password = Get-Password -name example_user
+    $password.Usage = "This is a sample update"
+    Update-Password -password $password 
+
+    #>
     param (
         [Parameter(Mandatory=$true, ValueFromPipeline=$true)]
         [System.Management.Automation.PSObject] $password
