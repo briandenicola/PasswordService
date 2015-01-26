@@ -100,11 +100,7 @@ function New-Password
     This PowerShell Function will Create a New Passwords
 
     .EXAMPLE
-    $pass = New-Object PSObject -Property @{
-        Name = 'example_user'
-        Value = 'dsafjlkl344j3l4j32432'
-        Usage = 'This is a sample user'
-    }
+    $pass = @{Name="example_user";Value="adfsasfasdfsa";Usage="This is a sample user"}
     New-Password -password $pass
 
     #>
