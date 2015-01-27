@@ -4,14 +4,14 @@
         <table class="table table-striped table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>User Name</th>
-                    <th>Last Modified Date</th>
-		    <th>Last Modified By</th>
+                    <th><a href="" ng-click="predicate='Name'; reverse=!reverse">User Name</a></th>
+                    <th><a href="" ng-click="predicate='LastModifiedDate'; reverse=!reverse">Last Modified Date</a></th>
+		    <th><a href="" ng-click="predicate='LastModifyBy'; reverse=!reverse">Last Modified By</a></th>
                     <th>Usage</th>
 		    <th>Edit</th>
                 </tr>
             </thead>
-            <tr dir-paginate="password in passwords | filter:searchTerm | itemsPerPage: 10" current-page="currentPage">
+            <tr dir-paginate="password in passwords | orderBy:predicate:reverse | filter:searchTerm | itemsPerPage: 10" current-page="currentPage">
                 <td>{{password.Name}}</td>
 				<td>{{password.LastModifiedDate}}</td>
 				<td>{{password.LastModifyBy}}</td>

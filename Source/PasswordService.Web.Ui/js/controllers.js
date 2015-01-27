@@ -3,11 +3,12 @@
 (function (app) {
     var passwordAppController = function( $scope ) {
         $scope.searchTerm = '';
+	$scope.predicate = 'Name';
+	$scope.reverse = false;
     }
 
     var passwordServiceController = function ($scope, passwordService) {
-        
-        $scope.currentPage = 1;
+	$scope.currentPage = 1;        
 
         passwordService
              .getAll()
@@ -60,12 +61,13 @@
         $scope.save = function () {
            createPassword();
            $modalInstance.close($scope.create.password);
+           window.location.replace("");
         }
 
         var createPassword = function () {
             passwordService.create($scope.create.password)
                 .success(function (password) {
-                    window.location.replace("");
+                    //$scope.create.password = null;
                 });
         };
     }
@@ -90,6 +92,7 @@
         var updatePassword = function () {
             passwordService.update($scope.password)
                 .success(function () {
+                    //$scope.password = null;
                     window.location.replace("");
                 });
         };
