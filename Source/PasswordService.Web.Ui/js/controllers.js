@@ -35,6 +35,7 @@
       };
 
       $scope.open = function (size) {
+		console.log("Scope - Open");
         var modalInstance = $modal.open({
           templateUrl: 'template/modal/create.html',
           controller: 'passwordCreateServiceController',
@@ -47,7 +48,10 @@
         });
 
         modalInstance.result.then(function (password) {
-          $scope.create.password = password;
+			console.log("modalInstance.result.then");
+			console.log("password - " + password.Name);
+			console.log("password - " + password.Usage);
+			$scope.create.password = password;
         });
       }
     }
@@ -55,13 +59,15 @@
     var passwordCreateServiceController = function ($scope, $modalInstance, passwordService) {
 
         $scope.cancel = function () {
-          $modalInstance.dismiss('cancel');  
+			console.log("Scope - cancel");
+			$modalInstance.dismiss('cancel');  
         };
 
         $scope.save = function () {
-           createPassword();
-           $modalInstance.close($scope.create.password);
-           window.location.replace("");
+			console.log("Scope - new/save " + $scope.create.password);
+			createPassword();
+			$modalInstance.close($scope.create.password);
+			window.location.replace("");
         }
 
         var createPassword = function () {
@@ -81,15 +87,17 @@
              });
 
         $scope.cancel = function () {
-          window.location.replace(""); 
+			window.location.replace(""); 
         };
 
         $scope.save = function () {
+			console.log("Scope - update/save Password " + $scope.password);
             updatePassword();
             window.location.replace("");
         }
 
         var updatePassword = function () {
+			console.log("Scope - update Password " + $scope.password);
             passwordService.update($scope.password)
                 .success(function () {
                     //$scope.password = null;
