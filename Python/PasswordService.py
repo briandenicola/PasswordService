@@ -6,9 +6,9 @@ import os
 from requests_ntlm import HttpNtlmAuth
 
 class Password:
-	User  = None
-	Value = None
-	Usage = None
+	User  = ""
+	Value = ""
+	Usage = ""
 	def __init__(self, username, password, usage):
 		self.User = username
 		self.Value = password
@@ -29,6 +29,8 @@ class PasswordService:
 		r = requests.get( self.webservice_url, auth=self.auth, verify=self.ca_certificate_path )
 		if r.status_code == 200:
 			self.passwords = json.loads(r.text)
+		else:
+			return r.status_code 
 
 	def FindIdByName(self,name):
 		ids = [ password['PasswordId'] for password in self.passwords if password['Name'] == name ]
@@ -49,10 +51,10 @@ class PasswordService:
 
 	def NewPassword(self,name,password,usage):
 		payload = {'Name': name, 'Value': password, 'Usage': usage}
-		r = requests.post( self.webservice_url, params=payload )
+		r = requests.post( self.webservice_url, data=payload, auth=self.auth, verify=self.ca_certificate_path )
 		self.LoadPasswords()
 
 	def UpdatePassword(self,id,name,password,usage):
 		payload = {'Name': name, 'Value': password, 'Usage': usage}
-		r = requests.put( self.webservice_url + id, params=payload )
+		r = requests.put( self.webservice_url + id, data=payload, auth=self.auth, verify=self.ca_certificate_path )
 		self.LoadPasswords()
