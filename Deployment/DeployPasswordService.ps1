@@ -10,7 +10,7 @@ Set-Variable -Name sql_server_express_url    -Value "http://download.microsoft.c
 Set-Variable -Name sql_server_express        -Value "SQLEXPR_x64_ENU.exe"
 Set-Variable -Name sql_server_express_setup  -Value (Join-Path -Path $package_source -ChildPath "SQL")
 
-Set-Variable -Name password_service_code_url -Value "https://github.com/bjd145/PasswordService/blob/master/Deployment/{0}"
+Set-Variable -Name password_service_code_url -Value "https://github.com/bjd145/PasswordService/raw/master/Deployment/{0}"
 Set-Variable -Name password_service_code     -Value "Passwords-1.0.0.zip"
 
 Set-Variable -Name WebAdmin_resource_Url     -Value "https://gallery.technet.microsoft.com/xWebAdministration-Module-3c8bb6be/file/135740/1/{0}"
