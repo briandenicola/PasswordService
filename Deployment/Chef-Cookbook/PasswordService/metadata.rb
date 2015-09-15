@@ -4,7 +4,7 @@ maintainer_email 'bjd145@yahoo.com'
 license 'all_rights'
 description 'Installs/Configures PasswordService'
 long_description 'Installs/Configures PasswordService'
-version '0.2.2'
+version '0.3.5'
 
 depends 'sql_server', '~> 2.4.0'
 depends 'iis', '~> 4.1.1'

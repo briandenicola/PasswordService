@@ -111,3 +111,59 @@ iis_site 'PasswordService' do
   application_pool 'PasswordService'
   action [:add, :start]
 end
+
+powershell_script 'Enable NTLM Auth' do
+  code <<-POWERSHELL
+    $ErrorActionPreference = 'Stop'
+	Import-Module WebAdministration
+	$opts = @{
+		Name     = "Enabled"
+		Value    = "True"
+		PSPath   = "IIS:\"
+		Location = "PasswordService"
+		Filter   = "/system.webServer/security/authentication/windowsAuthentication"
+	}
+	Set-WebConfigurationProperty @opts 
+  POWERSHELL
+end
+
+powershell_script 'Set AESs Key and IV' do
+  code <<-POWERSHELL
+    $ErrorActionPreference = 'Stop'
+	
+	[Reflection.Assembly]::LoadWithPartialName("System.Security") | Out-Null
+	$aes = New-Object System.Security.Cryptography.RijndaelManaged
+	$aes.KeySize = 256
+	$aes.GenerateKey()
+	
+	$webconfig = (Join-Path -Path 'C:\\inetpub\\sites\\PasswordService' -ChildPath "web.Config")
+	$xml  = [xml](Get-Content $webconfig)
+
+	$aes_key = $xml.SelectSingleNode("//configuration/appSettings/add[@key='aesKey']")
+	if ($aes_key -ne $null) {
+		$appSettingsNode = $xml.SelectSingleNode("//configuration/appSettings")
+		$appSettingsNode.RemoveChild($aes_key) | Out-Null
+	}
+
+	$root = $xml.get_DocumentElement()
+	$aes_key = $xml.CreateNode('element',"add","")
+	$aes_key.SetAttribute("key", "aesKey")
+	$aes_key.SetAttribute("value", [Convert]::ToBase64String($aes.Key) )
+	$xml.SelectSingleNode("//configuration/appSettings").AppendChild($aes_key)
+	$xml.Save($webconfig)
+	
+	$aes_iv = $xml.SelectSingleNode("//configuration/appSettings/add[@key='aesIV']")
+	if ($aes_iv -ne $null) {
+		$appSettingsNode = $xml.SelectSingleNode("//configuration/appSettings")
+		$appSettingsNode.RemoveChild($aes_iv) | Out-Null
+	}
+
+	$root = $xml.get_DocumentElement()
+	$aes_iv = $xml.CreateNode('element',"add","")
+	$aes_iv.SetAttribute("key", "aesIV")
+	$aes_iv.SetAttribute("value", [Convert]::ToBase64String($aes.IV) )
+	$xml.SelectSingleNode("//configuration/appSettings").AppendChild($aes_iv)
+	$xml.Save($webconfig)
+    
+  POWERSHELL
+end

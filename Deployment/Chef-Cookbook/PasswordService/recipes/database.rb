@@ -38,4 +38,9 @@ powershell_script 'Grant SQL Access to AppPool' do
     Invoke-Sqlcmd -InputFile #{access_script_path}
   EOH
   guard_interpreter :powershell_script
+   only_if <<-EOH
+    Import-Module "#{sqlps_module_path}"
+    $sp = Invoke-Sqlcmd -Database PasswordService -Query "EXEC sp_helprotect @username = 'IIS APPPOOL\\PasswordService'"
+    ($sp.ProtectType.Trim() -eq 'Grant') -and ($sp.Action.Trim() -eq 'Select')
+  EOH
 end
