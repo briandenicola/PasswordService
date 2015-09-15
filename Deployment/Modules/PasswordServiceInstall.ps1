@@ -12,6 +12,7 @@ configuration PasswordServiceInstall
     )
 
     Import-DscResource -ModuleName xWebAdministration
+    Import-DscResource -ModuleName xDatabase
 
     Node 'localhost'
     {
@@ -24,8 +25,6 @@ configuration PasswordServiceInstall
             {
                 Ensure = 'Present'
                 Name   = $feature
-
-
             }
 
         }
@@ -52,8 +51,8 @@ configuration PasswordServiceInstall
             {
                 Import-Module WebAdministration
                 $opts = @{
-                    Name     = Enabled
-                    Value    = True
+                    Name     = "Enabled"
+                    Value    = "True"
                     PSPath   = "IIS:\"
                     Location = "Default Web Site"
                     Filter   = "/system.webServer/security/authentication/windowsAuthentication"
@@ -84,13 +83,7 @@ configuration PasswordServiceInstall
             {
                 Import-Module WebAdministration
                 $app_pool_path = 'IIS:\AppPools\DefaultAppPool'
-
-                $app_pool = Get-Item -Path $app_pool_path 
-                $app_pool.processModel.identityType = 3
-                $app_pool.processModel.username = $using:app_pool_user
-                $app_pool.processModel.password = $using:app_pool_password
-                $app_pool.managedRuntimeVersion = "v4.0"
-                $app_pool.managedPipeLineMode = "Integrated"
+                Set-ItemProperty $app_pool_path -Name processModel -Value @{userName=$using:app_pool_user;password=$using:app_pool_password;identitytype=3}
             }
 
             TestScript =
