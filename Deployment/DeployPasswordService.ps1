@@ -10,15 +10,12 @@ Set-Variable -Name sql_server_express_url    -Value "http://download.microsoft.c
 Set-Variable -Name sql_server_express        -Value "SQLEXPR_x64_ENU.exe"
 Set-Variable -Name sql_server_express_setup  -Value (Join-Path -Path $package_source -ChildPath "SQL")
 
-Set-Variable -Name password_service_code_url -Value "https://github.com/bjd145/PasswordService/raw/master/Deployment/{0}"
-Set-Variable -Name password_service_code     -Value "Passwords-1.0.0.zip"
+Set-Variable -Name github_url                -Value "https://github.com/bjd145/PasswordService/raw/master/Deployment/{0}"
+Set-Variable -Name password_service_code     -Value "Passwords_1.0.0.zip"
+Set-Variable -Name database_resource         -Value "xDatabase_1.3.0.zip"
 
 Set-Variable -Name WebAdmin_resource_Url     -Value "https://gallery.technet.microsoft.com/xWebAdministration-Module-3c8bb6be/file/135740/1/{0}"
 Set-Variable -Name WebAdmin_resource         -Value "xWebAdministration_1.3.2.4.zip"
-
-Set-Variable -Name database_resource_Url     -Value "https://gallery.technet.microsoft.com/scriptcenter/xDatabase-PowerShell-0db6cdaf/file/120240/1/{0}"
-Set-Variable -Name database_resource         -Value "xDatabase_1.1.zip"
-
 
 Write-Verbose -Message ("[{0}] - Downloading Required Packages  . . ." -f $(Get-Date))
 if( !(Test-Path -Path $package_source) ) {
@@ -26,10 +23,11 @@ if( !(Test-Path -Path $package_source) ) {
 }
 
 $wc = New-Object System.Net.WebClient
-$wc.DownloadFile( ($sql_server_express_url    -f $sql_server_express),     (Join-Path -Path $package_source -ChildPath $sql_server_express)    )
-$wc.DownloadFile( ($password_service_code_url -f $password_service_code),  (Join-Path -Path $package_source -ChildPath $password_service_code) )
-$wc.DownloadFile( ($WebAdmin_resource_Url     -f $WebAdmin_resource),      (Join-Path -Path $package_source -ChildPath $WebAdmin_resource) )
-$wc.DownloadFile( ($database_resource_Url     -f $database_resource),      (Join-Path -Path $package_source -ChildPath $database_resource) )
+$wc.DownloadFile( ($sql_server_express_url -f $sql_server_express),     (Join-Path -Path $package_source -ChildPath $sql_server_express)    )
+$wc.DownloadFile( ($WebAdmin_resource_Url  -f $WebAdmin_resource),      (Join-Path -Path $package_source -ChildPath $WebAdmin_resource) )
+
+$wc.DownloadFile( ($github_url             -f $password_service_code),  (Join-Path -Path $package_source -ChildPath $password_service_code) )
+$wc.DownloadFile( ($github_url             -f $database_resource),      (Join-Path -Path $package_source -ChildPath $database_resource) )
 
 Write-Verbose -Message ("[{0}] - Extract SQL Express Install Files  . . ." -f $(Get-Date))
 &(Join-Path -Path $package_source -ChildPath $sql_server_express) /x:$sql_server_express_setup /q
