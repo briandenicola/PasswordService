@@ -86,7 +86,7 @@ end
 
 site_directory = 'C:\inetpub\sites\PasswordService'
 
-windows_zipfile app_directory do
+windows_zipfile site_directory do
   source 'https://github.com/bjd145/PasswordService/raw/master/Deployment/Passwords_1.0.0.zip'
   action :unzip
   not_if { ::File.exists?(site_directory) }
