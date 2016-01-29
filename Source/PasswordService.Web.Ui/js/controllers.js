@@ -8,7 +8,7 @@
 	}
 
 	var passwordServiceController = function ($scope, passwordService) {
-		$scope.currentPage = 1;        
+		$scope.currentPage = 1;
 
 		passwordService
 			 .getAll()
@@ -21,7 +21,7 @@
 			 .getById(id)
 			 .success(function (data) {
 				  prompt("The password is...",data.Value.toString());
-			 });  
+			 });
 		};
 	}
 
@@ -58,25 +58,22 @@
 
 		$scope.cancel = function () {
 			console.log("Scope - Cancel");
-			$modalInstance.dismiss('cancel');  
+			$modalInstance.dismiss('cancel');
 		};
 
 		$scope.save = function () {
 			console.log("Scope - New/Save function with Password Name - " + $scope.create.password.Name);
-			createPassword();
-			$modalInstance.close($scope.create.password);
-			window.location.replace("");
-		}
-
-		var createPassword = function () {
 			passwordService.create($scope.create.password)
 				.success(function () {
 					console.log("Success Call to HTTP POST - New/Save ");
+                    $modalInstance.close($scope.create.password);
+                    window.location.replace("");
 				})
 				.error(function () {
 					console.log("Erroring Calling to HTTP POST - New/Save ");
+                    window.location.replace("");
 				});
-		};
+		}
 	}
 
 	var passwordEditServiceController = function ($scope, $routeParams, passwordService) {
@@ -88,31 +85,28 @@
 			 });
 
 		$scope.cancel = function () {
-			window.location.replace(""); 
+			window.location.replace("");
 		};
 
 		$scope.save = function () {
-		    console.log("Scope - Update/Save function with Password Name - " + $scope.create.password.Name);
-			updatePassword();
-			window.location.replace("");
-		}
-
-		var updatePassword = function () {
-			passwordService.update($scope.password)
+		    console.log("Scope - Update/Save function with Password Name - " + $scope.password.Name);
+            passwordService.update($scope.password)
 				.success(function () {
 				    console.log("Success Call to HTTP PUT - Update/Save ");
 					window.location.replace("");
 				})
 				.error(function () {
 				    console.log("Erroring Calling to HTTP PUTT - Update/Save ");
+                    window.location.replace("");
 				});
-		};
+			
+		}
 	}
 
 	app.controller("passwordAppController", passwordAppController);
 	app.controller("passwordServiceController", passwordServiceController);
 	app.controller("passwordCreateModalController", passwordCreateModalController);
-	app.controller("passwordCreateServiceController", passwordCreateServiceController);    
+	app.controller("passwordCreateServiceController", passwordCreateServiceController);
 	app.controller("passwordEditServiceController", passwordEditServiceController);
 
 }(angular.module("passwordServiceApp")));
