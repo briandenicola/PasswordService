@@ -25,52 +25,49 @@
 		};
 	}
 
-	var passwordCreateModalController = function ($scope, $modal, $log) {
-		$scope.create = {
-			password: {
-				Name: "",
-				Value: "",
-				Usage: ""
-			}
-		};
-
+	var passwordCreateModalController = function ($scope, $modal, $log) {       
 		$scope.open = function (size) {
-			console.log("Scope - Open");
 			var modalInstance = $modal.open({
 				templateUrl: 'template/modal/create.html',
 				controller: 'passwordCreateServiceController',
 				size: size,
 				resolve: {
 					password: function () {
-						return $scope.create.password;
+						return $scope.password;
 					}
 				}
 			});
 
 			modalInstance.result.then(function (password) {
-				console.log("Inside modalInstance.result.then with password Name - " + password.Name);
-				$scope.create.password = password;
+				$scope.password = password;
 			});
 		}
 	}
 
 	var passwordCreateServiceController = function ($scope, $modalInstance, passwordService) {
-
+        $scope.password = {
+            Name: "",
+            Value: "",
+            Usage: ""
+        };
+        
 		$scope.cancel = function () {
-			console.log("Scope - Cancel");
 			$modalInstance.dismiss('cancel');
 		};
 
+        $scope.generate = function() {
+            //https://stackoverflow.com/questions/9719570/generate-random-password-string-with-requirements-in-javascript
+            var randomstring = Math.random().toString(36).slice(-12);
+            $scope.password.Value = randomstring;
+        }
+
 		$scope.save = function () {
-			console.log("Scope - New/Save function with Password Name - " + $scope.create.password.Name);
-			passwordService.create($scope.create.password)
+			passwordService.create($scope.password)
 				.success(function () {
-					console.log("Success Call to HTTP POST - New/Save ");
-                    $modalInstance.close($scope.create.password);
+                    $modalInstance.close($scope.password);
                     window.location.replace("");
 				})
 				.error(function () {
-					console.log("Erroring Calling to HTTP POST - New/Save ");
                     window.location.replace("");
 				});
 		}
@@ -89,14 +86,11 @@
 		};
 
 		$scope.save = function () {
-		    console.log("Scope - Update/Save function with Password Name - " + $scope.password.Name);
             passwordService.update($scope.password)
 				.success(function () {
-				    console.log("Success Call to HTTP PUT - Update/Save ");
 					window.location.replace("");
 				})
 				.error(function () {
-				    console.log("Erroring Calling to HTTP PUTT - Update/Save ");
                     window.location.replace("");
 				});
 			

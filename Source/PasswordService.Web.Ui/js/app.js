@@ -7,6 +7,8 @@
         $routeProvider
             .when("/list",
                 { templateUrl: "template/list.html"})
+            .when("/create",
+                { templateUrl: "template/modal/create.html"})
             .when("/list/:id",
                 { templateUrl: "template/details.html"})
             .when("/edit/:id",
