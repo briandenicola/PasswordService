@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using PasswordService.Web.Api.Models;
@@ -23,10 +24,9 @@ namespace PasswordService.Web.Api.Controllers
         [System.Web.Http.HttpGet]
         public IQueryable<Password> GetPasswords()
         {
-            
             var passswords = db.Passwords
                 .ToList()
-                .Select( item => new Password
+                .Select(item => new Password
                 {
                     PasswordId = item.PasswordId,
                     Name = item.Name,
@@ -41,6 +41,18 @@ namespace PasswordService.Web.Api.Controllers
                 .OrderByDescending(item => item.Name)
                 .AsQueryable();
 
+            var audit = new Audit {
+                AccountName = String.Empty,
+                Action = Request.Method.ToString(),
+                Date = DateTime.Now,
+                DateUTC = DateTime.UtcNow,
+                User = System.Threading.Thread.CurrentPrincipal.Identity.Name.ToString(),
+                Notes = this.Request.Headers.UserAgent.ToString()
+            };
+
+            db.Audits.Add(audit);
+            db.SaveChanges();
+
             return passswords;
         }
 
@@ -53,8 +65,20 @@ namespace PasswordService.Web.Api.Controllers
                 return NotFound();
             }
 
-            password.Value = Encryption.Decrypt(password.Value).Replace(String.Concat(String.Concat(password.Salt, password.Name)),String.Empty).TrimStart();
+            var audit = new Audit
+            {
+                AccountName = password.Name,
+                Action = Request.Method.ToString(),
+                Date = DateTime.Now,
+                DateUTC = DateTime.UtcNow,
+                User = System.Threading.Thread.CurrentPrincipal.Identity.Name.ToString(),
+                Notes = this.Request.Headers.UserAgent.ToString()
+            };
 
+            db.Audits.Add(audit);
+            await db.SaveChangesAsync();
+
+            password.Value = Encryption.Decrypt(password.Value).Replace(String.Concat(String.Concat(password.Salt, password.Name)),String.Empty).TrimStart();
             return Ok(password);
         }
 
@@ -75,6 +99,17 @@ namespace PasswordService.Web.Api.Controllers
 
             db.Entry(password).State = EntityState.Modified;
 
+            var audit = new Audit {
+                AccountName = password.Name,
+                Action = Request.Method.ToString(),
+                Date = DateTime.Now,
+                DateUTC = DateTime.UtcNow,
+                User = System.Threading.Thread.CurrentPrincipal.Identity.Name.ToString(),
+                Notes = this.Request.Headers.UserAgent.ToString()
+            };
+
+            db.Audits.Add(audit);
+            
             try {
                 await db.SaveChangesAsync();
             }
@@ -102,6 +137,17 @@ namespace PasswordService.Web.Api.Controllers
             password.CreatedBy = password.LastModifyBy = System.Threading.Thread.CurrentPrincipal.Identity.Name.ToString();
             password.Salt = Encryption.GenerateSalt();
             password.Value = Encryption.Encrypt(String.Concat(password.Salt, password.Name, password.Value));
+
+            var audit = new Audit {
+                AccountName = password.Name,
+                Action = Request.Method.ToString(),
+                Date = DateTime.Now,
+                DateUTC = DateTime.UtcNow,
+                User = System.Threading.Thread.CurrentPrincipal.Identity.Name.ToString(),
+                Notes = this.Request.Headers.UserAgent.ToString()
+            };
+
+            db.Audits.Add(audit);
 
             db.Passwords.Add(password);
             await db.SaveChangesAsync();

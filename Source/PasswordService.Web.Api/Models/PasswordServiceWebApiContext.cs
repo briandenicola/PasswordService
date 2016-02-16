@@ -20,6 +20,6 @@ namespace PasswordService.Web.Api.Models
         }
 
         public System.Data.Entity.DbSet<PasswordService.Web.Api.Models.Password> Passwords { get; set; }
-    
+        public System.Data.Entity.DbSet<PasswordService.Web.Api.Models.Audit> Audits { get; set; }
     }
 }
