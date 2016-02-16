@@ -7,6 +7,16 @@
 		$scope.reverse = false;
 	}
 
+    var passwordAuditController = function ($scope, passwordService) {
+		$scope.currentPage = 1;
+
+		passwordService
+			 .getAudits()
+			 .success(function (data) {
+				 $scope.audits = data;
+			 });
+	}
+
 	var passwordServiceController = function ($scope, passwordService) {
 		$scope.currentPage = 1;
 
@@ -98,6 +108,7 @@
 	}
 
 	app.controller("passwordAppController", passwordAppController);
+    app.controller("passwordAuditController", passwordAuditController);
 	app.controller("passwordServiceController", passwordServiceController);
 	app.controller("passwordCreateModalController", passwordCreateModalController);
 	app.controller("passwordCreateServiceController", passwordCreateServiceController);

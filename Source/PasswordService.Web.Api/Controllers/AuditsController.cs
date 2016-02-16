@@ -58,5 +58,11 @@ namespace PasswordService.Web.Api.Controllers
             throw new HttpResponseException(HttpStatusCode.MethodNotAllowed);
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing) { db.Dispose(); }
+            base.Dispose(disposing);
+        }
+
     }
 }

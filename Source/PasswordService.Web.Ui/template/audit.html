@@ -1,0 +1,29 @@
+﻿<hr/>
+<div ng-controller="passwordAuditController">
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th><a href="" ng-click="predicate='Date'; reverse=!reverse">Date</a></th>
+		            <th><a href="" ng-click="predicate='DateUTC'; reverse=!reverse">Date (UTC)</a></th>
+                    <th><a href="" ng-click="predicate='Action'; reverse=!reverse">Action</a></th>
+                    <th><a href="" ng-click="predicate='AccountName'; reverse=!reverse">AccountName</a></th>
+                    <th><a href="" ng-click="predicate='User'; reverse=!reverse">Action Performed By</a></th>
+                </tr>
+            </thead>
+            <tr dir-paginate="audit in audits | orderBy:predicate:reverse | filter:searchTerm | itemsPerPage: 10" current-page="currentPage">
+				<td>{{audit.Date}}</td>
+				<td>{{audit.DateUTC}}</td>
+                <td>{{audit.Action}}</td>
+                <td>{{audit.AccountName}}</td> 
+                <td>{{audit.User}}</td>
+            </tr>
+        </table>
+	<dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="template/pagination.html"></dirpagination-controls>
+
+    </div>
+</div>
+
+
+
+
