@@ -15,6 +15,8 @@
                 { templateUrl: "template/details.html"})
             .when("/edit/:id",
                 { templateUrl: "template/edit.html" })
+            .when("/remove/:id",
+                { templateUrl: "template/remove.html" })
             .otherwise(
                 { redirectTo: "/list" });
     };
@@ -24,6 +26,7 @@
         var getAll = function () { return $http.get(serviceUrl); }
         var getById = function (id) { return $http.get(serviceUrl + id); }
         var update = function (password) { return $http.put(serviceUrl + password.PasswordId, password); }
+        var remove = function (id) { return $http.delete(serviceUrl + id); }
         var create = function (password) { return $http.post(serviceUrl, password); }
 
         return {
@@ -31,6 +34,7 @@
             getAll: getAll,
             getById: getById,
             update: update,
+            remove: remove,
             create: create
         };
     };

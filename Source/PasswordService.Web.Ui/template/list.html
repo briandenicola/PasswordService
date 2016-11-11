@@ -6,9 +6,9 @@
                 <tr>
                     <th><a href="" ng-click="predicate='Name'; reverse=!reverse">User Name</a></th>
                     <th><a href="" ng-click="predicate='LastModifiedDate'; reverse=!reverse">Last Modified Date</a></th>
-		    <th><a href="" ng-click="predicate='LastModifyBy'; reverse=!reverse">Last Modified By</a></th>
-                    <th>Usage</th>
-		    <th>Edit</th>
+		            <th><a href="" ng-click="predicate='LastModifyBy'; reverse=!reverse">Last Modified By</a></th>
+                    <th><a href="" ng-click="predicate='Usage'; reverse=!reverse">Url</th>
+		            <th>Edit/Remove</th>
                 </tr>
             </thead>
             <tr dir-paginate="password in passwords | orderBy:predicate:reverse | filter:searchTerm | itemsPerPage: 10" current-page="currentPage">
@@ -18,7 +18,8 @@
                 <td>{{password.Usage}}</td>
                 <td>
                     <a href="" ng-click="showPassword(password.PasswordId)"><span class="glyphicon glyphicon-star"></span></a>
-                    <a href="#/edit/{{password.PasswordId}}"><span class="glyphicon glyphicon-pencil"></span></a>
+                    <a href="#/edit/{{password.PasswordId}}"><span class="glyphicon glyphicon-pencil glyphicon"></span></a>
+                    <a href="#/remove/{{password.PasswordId}}"><span class="glyphicon glyphicon-remove glyphicon"></span></a>
                 </td> 
             </tr>
         </table>

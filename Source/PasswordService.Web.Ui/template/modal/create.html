@@ -1,21 +1,29 @@
 ﻿<div class="modal-header">
-Create a New Password
+Create a Password
 </div>
 <div class="modal-body">
     <fieldset>
     <form name="NewPassword">
         <div class="form-group">
-            <label for="Name">Name:</label>
+            <label for="Name">User Name:</label>
             <input id="Name" type="text" ng-model="password.Name" required class="form-control" />
         </div>
         <div class="form-group">
             <label for="Value">Password:</label>
-            <input id="Value" type="text" ng-model="password.Value" required class="form-control"  />
+            <input id="Value" type="text" ng-model="password.Value" required class="form-control" />
         </div>
         <div class="form-group">
-            <label for="Usage">Usage:</label>
+            <label for="Usage">Url:</label>
             <input id="Usage" type="text" ng-model="password.Usage" required class="form-control" />
         </div> 
+        <div class="form-group">
+            <label for="SecurityQuestions">Answers to Security Questions:</label>
+            <input id="SecurityQuestions" type="text" ng-model="password.SecurityQuestions" required class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="Notes">Notes:</label>
+            <input id="Notes" type="text" ng-model="password.Notes" required class="form-control" />
+        </div>
     </form>
     </fieldset>
 </div>

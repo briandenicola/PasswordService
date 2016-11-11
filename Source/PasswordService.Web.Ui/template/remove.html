@@ -1,0 +1,19 @@
+﻿<h3>
+Please Ensure Password Deletion. . .
+</h3>
+<div ng-controller="passwordEditServiceController">
+    <form>
+        <fieldset>
+            <div class="form-group">
+                <label for="Name">Name:</label>
+                <input id="Name" type="text" ng-model="password.Name" required class="form-control" readonly=""/>
+            </div>
+            <div class="form-group">
+                <label for="Usage">Url:</label>
+                <input id="Usage" type="text" ng-model="password.Usage" class="form-control" readonly=""/>
+            </div>
+            <button class="btn" btn-primary" ng-click="remove()">Delete</button>
+            <button class="btn" btn-warning" ng-click="cancel()">Cancel</button>
+        </fieldset>
+    </form>
+</div>

@@ -9,9 +9,16 @@ Desktop.ini
 $RECYCLE.BIN/
 
 #Push NuGet.exe
-**/bin/Debug/
-**/bin/Release/
+[Dd]ebug/
+[Rr]elease/
+[Pp]roperties/
 **/packages/
+*.config 
+*.obj
+*.pdb
+*.tmp
+*.vspscc
+*.meta
 
 # Windows Installer files
 *.cab

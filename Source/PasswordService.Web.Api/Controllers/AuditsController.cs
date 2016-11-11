@@ -21,7 +21,7 @@ namespace PasswordService.Web.Api.Controllers
         // GET: api/Audits
         public IQueryable<Audit> GetAudits()
         {
-            return db.Audits;
+            return db.Audits.OrderByDescending(item => item.Date);
         }
 
         // GET: api/Audits/5

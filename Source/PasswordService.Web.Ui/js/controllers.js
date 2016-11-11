@@ -66,8 +66,7 @@
 		};
 
         $scope.generate = function() {
-            //https://stackoverflow.com/questions/9719570/generate-random-password-string-with-requirements-in-javascript
-            var randomstring = Math.random().toString(36).slice(-12);
+            var randomstring = Math.random().toString(36).slice(-15);
             $scope.password.Value = randomstring;
         }
 
@@ -95,6 +94,21 @@
 			window.location.replace("");
 		};
 
+		$scope.generate = function () {
+		    var randomstring = Math.random().toString(36).slice(-15);
+		    $scope.password.Value = randomstring;
+		}
+
+		$scope.remove = function () {
+		    passwordService.remove($routeParams.id)
+				.success(function () {
+				    window.location.replace("");
+				})
+				.error(function () {
+				    window.location.replace("");
+				});
+		};
+
 		$scope.save = function () {
             passwordService.update($scope.password)
 				.success(function () {
@@ -103,7 +117,6 @@
 				.error(function () {
                     window.location.replace("");
 				});
-			
 		}
 	}
 

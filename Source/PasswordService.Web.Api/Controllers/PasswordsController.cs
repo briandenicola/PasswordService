@@ -33,6 +33,8 @@ namespace PasswordService.Web.Api.Controllers
                     Salt = string.Concat(Enumerable.Repeat("*", 8)),
                     Value = item.Value,
                     Usage = item.Usage,
+                    Notes = item.Notes,
+                    SecurityQuestions = item.SecurityQuestions,
                     CreatedBy = item.CreatedBy,
                     CreatedDate = item.CreatedDate,
                     LastModifiedDate = item.LastModifiedDate,
@@ -157,9 +159,29 @@ namespace PasswordService.Web.Api.Controllers
 
         [System.Web.Http.HttpDelete]
         [ResponseType(typeof(Password))]
-        public Task<IHttpActionResult> DeletePassword(long id)
+        public async Task<IHttpActionResult> DeletePassword(long id)
         {
-            throw new HttpResponseException(HttpStatusCode.MethodNotAllowed); 
+            //throw new HttpResponseException(HttpStatusCode.MethodNotAllowed); 
+            Password password = await db.Passwords.FindAsync(id);
+            if (password == null)
+            {
+                return NotFound();
+            }
+
+            var audit = new Audit
+            {
+                AccountName = password.Name,
+                Action = Request.Method.ToString(),
+                Date = DateTime.Now,
+                DateUTC = DateTime.UtcNow,
+                User = System.Threading.Thread.CurrentPrincipal.Identity.Name.ToString(),
+                Notes = this.Request.Headers.UserAgent.ToString()
+            };
+
+            db.Audits.Add(audit);
+            db.Passwords.Remove(password);
+            await db.SaveChangesAsync();
+            return Ok();
         }
 
         protected override void Dispose(bool disposing)
