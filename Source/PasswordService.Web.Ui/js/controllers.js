@@ -1,13 +1,21 @@
 ﻿'use strict';
 
 (function (app) {
-	var passwordAppController = function( $scope ) {
+    var passwordAppController = function ($scope, adalService) {
 		$scope.searchTerm = '';
 		$scope.predicate = 'Name';
 		$scope.reverse = false;
+
+		$scope.login = function () {
+		    adalService.login();
+		};
+		$scope.logout = function () {
+		    adalService.logOut();
+		};
+
 	}
 
-    var passwordAuditController = function ($scope, passwordService) {
+	var passwordAuditController = function ($scope, passwordService, adalService) {
 		$scope.currentPage = 1;
 
 		passwordService
@@ -17,7 +25,7 @@
 			 });
 	}
 
-	var passwordServiceController = function ($scope, passwordService) {
+	var passwordServiceController = function ($scope, passwordService, adalService) {
 		$scope.currentPage = 1;
 
 		passwordService
@@ -54,7 +62,7 @@
 		}
 	}
 
-	var passwordCreateServiceController = function ($scope, $modalInstance, passwordService) {
+	var passwordCreateServiceController = function ($scope, $modalInstance, passwordService, adalService) {
         $scope.password = {
             Name: "",
             Value: "",
@@ -82,7 +90,7 @@
 		}
 	}
 
-	var passwordEditServiceController = function ($scope, $routeParams, passwordService) {
+	var passwordEditServiceController = function ($scope, $routeParams, passwordService, adalService) {
 
 		passwordService
 			 .getById($routeParams.id)
@@ -117,14 +125,15 @@
 				.error(function () {
                     window.location.replace("");
 				});
+			
 		}
 	}
 
-	app.controller("passwordAppController", passwordAppController);
-    app.controller("passwordAuditController", passwordAuditController);
-	app.controller("passwordServiceController", passwordServiceController);
-	app.controller("passwordCreateModalController", passwordCreateModalController);
-	app.controller("passwordCreateServiceController", passwordCreateServiceController);
-	app.controller("passwordEditServiceController", passwordEditServiceController);
+	app.controller("passwordAppController", ['$scope', 'passwordService', 'adalAuthenticationService', passwordAppController]);
+    app.controller("passwordAuditController", ['$scope', 'passwordService','adalAuthenticationService', passwordAuditController]);
+	app.controller("passwordServiceController", ['$scope', 'passwordService', 'adalAuthenticationService', passwordServiceController]);
+	app.controller("passwordCreateModalController",['$scope', '$modal', 'passwordService', 'adalAuthenticationService', passwordCreateModalController]);
+	app.controller("passwordCreateServiceController", ['$scope', '$modalInstance', 'passwordService', 'adalAuthenticationService',passwordCreateServiceController]);
+	app.controller("passwordEditServiceController", ['$scope', '$routeParams', 'passwordService', 'adalAuthenticationService', passwordEditServiceController]);
 
 }(angular.module("passwordServiceApp")));

@@ -1,13 +1,14 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" ng-app="passwordServiceApp">
 <head>
-    <title>Password Service Web Application</title>
+    <title>Password Vault</title>
+    <base href="/">
     <link rel="stylesheet" href="css/bootstrap.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body ng-controller="passwordAppController">
 <div class="container">
-    <h1>Application Operations Password Service App</h1>
+    <h1>Password Vault</h1>
     <div>
         <nav class="navbar navbar-default">
             <div class="navbar-header" ng-controller="passwordCreateModalController">
@@ -40,6 +41,8 @@
     <script src="lib/angular-route.min.js"></script>
     <script src="lib/ui-bootstrap-0.11.2.js"></script>
     <script src="lib/dirPagination.js"></script>
+    <script src="lib/adal.js"></script>
+    <script src="lib/adal-angular.js"></script>
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
 </body>
