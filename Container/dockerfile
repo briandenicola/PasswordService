@@ -1,0 +1,20 @@
+FROM microsoft/iis
+
+RUN mkdir C:\Site
+RUN mkdir C:\Source
+
+RUN powershell -NoProfile -Command \
+    Add-WindowsFeature -Name Web-ASP-Net45
+    
+RUN powershell -NoProfile -Command \
+    Import-module IISAdministration; \
+    New-IISSite -Name "Site" -PhysicalPath C:\site -BindingInformation "*:8000:"
+
+RUN powershell -NoProfile -Command \
+    Invoke-WebRequest -UseBasicParsing -Uri http://devdocker02/source.zip -OutFile C:\Source\SiteCode.zip;   \ 
+    Expand-Archive -Path C:\Source\SiteCode.zip -DestinationPath c:\site
+
+EXPOSE 8000
+WORKDIR /Site
+ENTRYPOINT powershell .\InitContainer.ps1
+CMD ["-DBConString", ""]
