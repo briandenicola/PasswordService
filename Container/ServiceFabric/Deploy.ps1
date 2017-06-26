@@ -24,6 +24,6 @@ Register-ServiceFabricApplicationType $AppType
 New-ServiceFabricApplication fabric:/$AppName $AppType $Version
 
 New-ServiceFabricService -Stateless -PartitionSchemeSingleton -ApplicationName fabric:/$AppName `
-    -ServiceName fabric:/$AppName/$ServiceName
+    -ServiceName fabric:/$AppName/$ServiceName `
     -ServiceTypeName $ServiceType -InstanceCount $InstanceCont 
 
