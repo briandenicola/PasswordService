@@ -12,7 +12,7 @@
     <ConfigOverrides />
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">
-        <RepositoryCredentials AccountName="bjd145" Password="+h/=vNoj57qDO7xkJ8idqFoNUnLRZBxL" PasswordEncrypted="false"/>
+        <RepositoryCredentials AccountName="bjd145" Password="" PasswordEncrypted="false"/>
         <PortBinding ContainerPort="8000" EndpointRef="PasswordDBApiTypeEndpoint" />
       </ContainerHostPolicies>
     </Policies>
