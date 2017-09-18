@@ -1,7 +1,0 @@
-songs.UserSongs.GroupBy(x => x.User).Select(g => new SongsForUser() 
-{ 
-    User = g.Key,
-    Songs = g.Select(s => s.SongId).ToList()
-});
-
-Sent from Surface
