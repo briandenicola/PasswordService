@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sqlserver
+  labels:
+    name: sqlserver
+spec:
+  hostNetwork: true
+  containers:
+  - name: passwddbsqlserver 
+    image: microsoft/mssql-server-linux:latest
+    ports:
+    - containerPort: 1433
+    env:
+    - name: MSSQL_SA_PASSWORD
+      value: "Pasword123!!"
+    - name: ACCEPT_EULA
+      value: "Y"
