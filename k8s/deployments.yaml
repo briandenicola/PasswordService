@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: 
+spec:
+  template:
+    metadata:
+      labels:
+        name: 
+    spec:
+      containers:
+      - name: 
+        image: bjd145/
+        env:
+        - name: 
+          valueFrom:
+           secretKeyRef:
+             name: 
+             key: 
+        - name: 
+          valueFrom:
+           secretKeyRef:
+             name: 
+             key: 
+        ports:
+        - containerPort: 5000                
