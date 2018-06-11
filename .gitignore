@@ -259,3 +259,5 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+*.dll
+V1/Source/.vs/PasswordService/v15/.suo
