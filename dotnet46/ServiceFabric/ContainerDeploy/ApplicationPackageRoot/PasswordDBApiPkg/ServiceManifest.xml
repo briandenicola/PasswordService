@@ -11,14 +11,13 @@
     <EntryPoint>
       <ContainerHost>
         <ImageName>bjd145.azurecr.io/devrepo/passworddb:1.5.4</ImageName>
-        <Commands>-DBServer db005.bjdazure.demo -DB PasswordsDB -DBUser db -DBPassword Password123</Commands>
       </ContainerHost>
     </EntryPoint>
   </CodePackage>
   <ConfigPackage Name="Config" Version="1.0.0" />
   <Resources>
     <Endpoints>
-      <Endpoint Name="PasswordDBApiTypeEndpoint" UriScheme="http" Port="81" Protocol="http"/>
+      <Endpoint Name="PasswordDBApiTypeEndpoint" UriScheme="http" Port="82" Protocol="http"/>
     </Endpoints>
   </Resources>
 </ServiceManifest>

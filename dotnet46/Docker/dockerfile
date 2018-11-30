@@ -1,7 +1,6 @@
-FROM microsoft/iis 
+FROM microsoft/iis:windowsservercore-ltsc2016
 
 RUN mkdir C:\Site 
-RUN mkdir C: \Source 
 
 RUN powershell -NoProfile -Command \ 
     Add-WindowsFeature -Name Web-ASP-Net45 
@@ -9,10 +8,9 @@ RUN powershell -NoProfile -Command \
     Import-module IISAdministration; \ 
     New-IISSite -Name "Site" -PhysicalPath C:\site -BindingInformation "*:8000:"
 
-COPY source.zip C:\Source
-RUN powershell -NoProfile -Command \
-        Expand-Archive -Path C: \Source\source.zip -DestinationPath c:\site 
+WORKDIR /Site 
+COPY publish /Site
+COPY InitContainer.ps1 /Site
 
 EXPOSE 8000
-WORKDIR /Site 
 ENTRYPOINT powershell .\InitContainer.ps1
