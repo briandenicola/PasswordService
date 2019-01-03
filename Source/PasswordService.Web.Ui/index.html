@@ -1,40 +1,43 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" ng-app="passwordServiceApp">
+
 <head>
     <title>Password Vault</title>
     <base href="/">
     <link rel="stylesheet" href="css/bootstrap.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
+
 <body ng-controller="passwordAppController">
-<div class="container">
-    <h1>Password Vault</h1>
-    <div>
-        <nav class="navbar navbar-default">
-            <div class="navbar-header" ng-controller="passwordCreateModalController">
-                <ul class="nav navbar-nav nav-pills">
-                    <li><a href="#/list">Home</a></li>
-                    <li><a href="#/audit">Audit</a></li>
-                    <li><a href="" ng-click="open()">Create</a></li>
-                </ul>
-            </div>
-             <div class="col-sm-3 col-md-3 pull-right">
-                <form class="navbar-form">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search" name="q" role="search" ng-model="searchTerm" />
+    <div class="container">
+        <h1>Password Vault</h1>
+        <div>
+            <nav class="navbar navbar-default">
+                <div class="navbar-header" ng-controller="passwordCreateModalController">
+                    <ul class="nav navbar-nav nav-pills">
+                        <li><a href="#/list">Home</a></li>
+                        <li><a href="#/audit">Audit</a></li>
+                        <li><a href="" ng-click="open()">Create</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3 col-md-3 pull-right">
+                    <form class="navbar-form">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search" name="q" role="search"
+                                ng-model="searchTerm" />
                             <div class="input-group-btn">
                                 <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
                             </div>
-                    </div>
-                </form>
-            </div>
-        </nav>  
-    </div>
+                        </div>
+                    </form>
+                </div>
+            </nav>
+        </div>
 
-    <div>
-        <ng-view></ng-view>
+        <div>
+            <ng-view></ng-view>
+        </div>
     </div>
-</div>
     <script src="lib/jquery-1.9.1.min.js"></script>
     <script src="lib/bootstrap.min.js"></script>
     <script src="lib/angular.min.js"></script>
@@ -46,4 +49,5 @@
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
 </body>
+
 </html>

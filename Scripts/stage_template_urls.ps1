@@ -1,5 +1,9 @@
-$path = Join-Path -Path $PWD.Path -ChildPath "dotnet46\Source\PasswordService.Web.Ui\template"
-$hostname = "vault.denicolafamily.com"
+parm(
+    [string] $hostname
+)
+
+$path = Join-Path -Path $PWD.Path -ChildPath "..\Source\PasswordService.Web.Ui\template"
+
 $url = "https://{0}/template" -f $hostname
 $ip = [System.Net.Dns]::GetHostAddresses($hostname)| Select-Object -ExpandProperty  IPAddressToString
 
